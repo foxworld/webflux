@@ -3,7 +3,7 @@ package hello.webflux;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// ...existing code...
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+// ...existing code...
 
 @Slf4j
-//@SpringBootTest
+// ...existing code...
 class FunctionalProgrammingTest {
 
     @Test
@@ -39,7 +39,6 @@ class FunctionalProgrammingTest {
                 .forEach((data) -> log.info("value: {}", data)); // 찾은것을 루프로 출력
     }
 
-
     private void foreach(List<Integer> sink, Consumer<Integer> consumer) {
         for (Integer i : sink) {
             consumer.accept(i);
@@ -49,9 +48,9 @@ class FunctionalProgrammingTest {
     @Nonnull
     private List<Integer> filter(List<Integer> sink, Function<Integer, Boolean> predicate) {
         List<Integer> newSink2 = new ArrayList<>();
-        for(int i=0; i < 9; i++) {
-            if(predicate.apply(sink.get(i))) {
-                newSink2.add(sink.get(i));
+        for(Integer data : sink) {
+            if(predicate.apply(data)) {
+                newSink2.add(data);
             }
         }
         sink = newSink2;
@@ -61,8 +60,8 @@ class FunctionalProgrammingTest {
     @Nonnull
     private List<Integer> map(List<Integer> sink, Function<Integer, Integer> mapper) {
         List<Integer> newSink1 = new ArrayList<>();
-        for(int i=0; i < 9; i++) {
-            newSink1.add(mapper.apply(sink.get(i)));
+        for(Integer data : sink) {
+            newSink1.add(mapper.apply(data));
         }
         sink = newSink1;
         return sink;
