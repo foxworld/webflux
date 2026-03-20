@@ -3,6 +3,7 @@ package hello.webflux;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 // ...existing code...
 
 import java.util.ArrayList;
@@ -37,6 +38,28 @@ class FunctionalProgrammingTest {
                 .map((data) -> data * 2) // 2 * data 9번 넣기
                 .filter((data) -> data % 4 == 0) // 4의 배수만 찾기
                 .forEach((data) -> log.info("value: {}", data)); // 찾은것을 루프로 출력
+                // collect, foreach, min, max
+    }
+
+    @Test
+    public void produceOneToNineFluxOperatorTest() {
+        Flux<Integer> intFlux = Flux.create(sink -> {
+            for (int i = 1; i <= 9; i++) {
+                sink.next(i);
+            }
+            sink.complete();
+        });
+
+        intFlux.subscribe(data -> log.info("webFlux가 구독 중!!: {}", data));
+        log.info("Netty 이밴트 루프로 스레드 복귀!");
+    }
+
+    @Test
+    public void produceOneToNineFluxTest2() {
+        Flux.fromIterable(IntStream.rangeClosed(1,9).boxed().toList())
+                .map((data) -> data * 2) // operator 대부분 stream가 유사하게 출력
+                .filter((data) -> data % 4 == 0) // 4의 배수만 찾기
+                .subscribe(data -> log.info("webFlux가 구독 중!!: {}", data)); // 찾은것을 루프로 출력
     }
 
     private void foreach(List<Integer> sink, Consumer<Integer> consumer) {
